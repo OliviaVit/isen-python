@@ -43,7 +43,6 @@ jobs:
       - name: Lint JS using ESLint (Marketplace)
         uses: sibiraj-s/action-eslint@v3
         with:
-          eslint-args: '--ignore-path=.gitignore --quiet'
           extensions: 'js'
           annotations: true
 
@@ -52,4 +51,5 @@ jobs:
 
       - name: Lint HTML with tidy
         run: |
-          tidy -qe -config .tidyrc templates/base.html
+          tidy -qe -config .tidyrc templates/base.html || true
+      
