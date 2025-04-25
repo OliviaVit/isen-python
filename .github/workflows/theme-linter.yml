@@ -1,0 +1,47 @@
+name: Dark Theme Linter
+
+on:
+  push:
+    branches: [ main, feature/dark_theme ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Python lint tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pylint
+
+      - name: Lint Python tests
+        run: |
+          pylint --disable=C,R0801 --fail-under=7 unit_tests/test_theme.py integration_tests/test_theme_toggle.py
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install JS/HTML linters
+        run: |
+          npm install -g eslint htmllint
+
+      - name: Lint JS - theme-toggle.js
+        run: |
+          eslint static/js/theme-toggle.js
+
+      - name: Lint HTML - base.html
+        run: |
+          htmllint templates/base.html
