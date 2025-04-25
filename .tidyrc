@@ -1,0 +1,7 @@
+doctype: auto
+indent: auto
+indent-spaces: 2
+wrap: 120
+quiet: yes
+show-warnings: yes
+drop-empty-elements: no

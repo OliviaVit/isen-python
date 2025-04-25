@@ -1,0 +1,55 @@
+name: Dark Theme Linter
+
+on:
+  push:
+    branches:
+      - main
+      - feature/dark_theme
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pylint
+
+      - name: Lint Python files
+        run: |
+          pylint --disable=C,R0801 --fail-under=7 unit_tests/test_theme.py integration_tests/test_theme_toggle.py
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install JS tools
+        run: npm install
+
+      - name: Lint JS using ESLint (Marketplace)
+        uses: sibiraj-s/action-eslint@v3
+        with:
+          extensions: 'js'
+          annotations: true
+
+      - name: Install HTML tidy
+        run: sudo apt-get install -y tidy
+
+      - name: Lint HTML with tidy
+        run: |
+          tidy -qe -config .tidyrc templates/base.html || true
+      
