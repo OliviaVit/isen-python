@@ -2,7 +2,7 @@ name: Deploy Existing Docker Image to Cloud Run
 
 on:
   workflow_run:
-    workflows: ["Docker CI"] # Ici le nom de ton workflow qui construit l'image
+    workflows: ["Docker CI"]
     types:
       - completed
 
